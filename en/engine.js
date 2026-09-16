@@ -190,27 +190,58 @@
   })();
 
   // ---- 目錄 ----
+  function setTOCSection(group, open) {
+    group.classList.toggle('open', open);
+    group.querySelector('.toc-shead').setAttribute('aria-expanded', String(open));
+    group.querySelector('.toc-section-items').hidden = !open;
+  }
+
   function buildTOC() {
     tocEl.innerHTML = '';
     DECK.forEach(chap => {
       const wrap = document.createElement('div');
       wrap.className = 'toc-chapter open';
       wrap.style.setProperty('--ct', chap.color);
-      const head = document.createElement('div');
+      const head = document.createElement('button');
+      head.type = 'button';
+      head.setAttribute('aria-expanded', 'true');
       head.className = 'toc-chead';
       head.innerHTML = `<span class="toc-dot"></span>${U.chapter(chap.ch)}　${chap.title}`;
-      head.onclick = () => wrap.classList.toggle('open');
+      head.onclick = () => head.setAttribute('aria-expanded', String(wrap.classList.toggle('open')));
       wrap.appendChild(head);
       const items = document.createElement('div');
       items.className = 'toc-items';
+      const groups = new Map();
       flat.forEach((s, i) => {
         if (s.type !== 'slide' || s.ch !== chap.ch) return;
+        if (!groups.has(s.sec)) {
+          const group = document.createElement('div');
+          group.className = 'toc-section';
+          const heading = document.createElement('button');
+          heading.type = 'button';
+          heading.className = 'toc-shead';
+          heading.setAttribute('aria-expanded', 'false');
+          heading.innerHTML = `<span>${s.sec} ${s.secName || ''}</span><span class="toc-chevron" aria-hidden="true">›</span>`;
+          const list = document.createElement('div');
+          list.className = 'toc-section-items';
+          list.id = `toc-section-${i}`;
+          list.hidden = true;
+          heading.setAttribute('aria-controls', list.id);
+          heading.onclick = () => {
+            const open = !group.classList.contains('open');
+            tocEl.querySelectorAll('.toc-section').forEach(other => setTOCSection(other, false));
+            setTOCSection(group, open);
+          };
+          group.append(heading, list);
+          items.appendChild(group);
+          groups.set(s.sec, list);
+        }
         const b = document.createElement('button');
         b.className = 'toc-item';
         b.dataset.i = i;
         b.innerHTML = `<span class="ti-sec">${s.sec}</span>${s.title}`;
         b.onclick = () => { go(i); if (window.innerWidth <= 1080) tocEl.classList.remove('open'); };
-        items.appendChild(b);
+        groups.get(s.sec).appendChild(b);
       });
       wrap.appendChild(items);
       tocEl.appendChild(wrap);
@@ -218,9 +249,21 @@
   }
 
   function markTOC() {
+    let active = null;
     tocEl.querySelectorAll('.toc-item').forEach(b => {
       b.classList.toggle('active', +b.dataset.i === idx);
+      if (+b.dataset.i === idx) {
+        b.setAttribute('aria-current', 'page');
+        active = b;
+      } else b.removeAttribute('aria-current');
     });
+    const section = active && active.closest('.toc-section');
+    tocEl.querySelectorAll('.toc-section').forEach(group => setTOCSection(group, group === section));
+    if (active) {
+      const chapter = active.closest('.toc-chapter');
+      chapter.classList.add('open');
+      chapter.querySelector('.toc-chead').setAttribute('aria-expanded', 'true');
+    }
   }
 
   // ---- 渲染單頁 ----

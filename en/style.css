@@ -188,6 +188,21 @@ button { font: inherit; cursor: pointer; }
 }
 .toc-chead:hover { background: rgba(37, 99, 235, 0.06); }
 .toc-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ct); flex: none; }
+.toc-chead { width: 100%; border: 0; background: transparent; text-align: left; font-family: inherit; }
+.toc-section { margin: 4px 0; }
+.toc-shead {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; border: 0; border-radius: 8px; padding: 11px 9px;
+  background: rgba(37, 99, 235, 0.05); color: var(--ink);
+  font-family: inherit; font-size: 13px; font-weight: 700; line-height: 1.5;
+  text-align: left; cursor: pointer;
+}
+.toc-shead:hover { background: rgba(37, 99, 235, 0.1); }
+.toc-shead:focus-visible, .toc-chead:focus-visible { outline: 2px solid var(--ct); outline-offset: 2px; }
+.toc-chevron { flex: none; font-size: 22px; transition: transform 0.15s; }
+.toc-section.open > .toc-shead .toc-chevron { transform: rotate(90deg); }
+.toc-section-items { padding: 4px 0 4px 5px; }
+.toc-section-items[hidden] { display: none; }
 .toc-items { display: none; padding-left: 8px; }
 .toc-chapter.open .toc-items { display: block; }
 .toc-item {
