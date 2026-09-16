@@ -1,0 +1,33 @@
+/* Content styling only: retain the original engine, two-column stage and tools. */
+.source-note { color:#176b69; font-weight:700; font-size:13px; margin-bottom:8px; }
+.chapter-figure,.interactive-model { width:100%; flex-shrink:0; }
+.chapter-figure svg { max-height:320px; }
+.interactive-model svg,.slide-visual:has(.ictrl) .interactive-model svg,.zoom-body .interactive-model svg { max-height:220px; width:100%; }
+.model-cards { display:grid; gap:15px; }
+.model-cards>div { border-left:4px solid #176b69; border-radius:8px; background:#eaf3f1; padding:17px; font-size:18px; }
+.model-cards strong { display:block; font-size:24px; color:#176b69; margin-bottom:7px; }
+.chapter-table { width:100%; border-collapse:collapse; font-size:17px; }
+.chapter-table td,.chapter-table th { border-bottom:1px solid #cadcd8; padding:10px 7px; text-align:left; }
+.chapter-table th { background:#eaf3f1; font-size:15px; }
+.ictrl.model-controls { display:flex; flex-wrap:wrap; padding:0; margin:8px 0; gap:6px; width:100%; border:0; background:none; box-shadow:none; }
+.ictrl.model-controls label { display:block; flex-basis:100%; font-size:14px; }
+.model-controls .ival { float:right; }
+.ictrl.model-controls input[type=range] { display:block; width:100%; margin:3px 0; min-height:23px; accent-color:#176b69; }
+.model-controls button { background:#fff; color:#176b69; border:1px solid #176b69; border-radius:7px; padding:6px 10px; font-size:13px; }
+.model-result { background:#eaf3f1; border-radius:8px; padding:9px 12px; font-size:17px; color:#176b69; }
+.mistakes { display:grid; gap:14px; font-size:17px; }
+.wrong,.right { padding:10px 12px; border-radius:8px; }
+.wrong { background:#fbecee; color:#8c2639; }
+.right { background:#eaf3f1; color:#176b69; }
+.ex-q .zh { margin-top:8px; }
+.zoom-q { font-size:clamp(20px,2vw,30px); line-height:1.5; }
+.zoom-sol { margin-top:16px; padding-top:14px; }
+.zoom-sol ol { font-size:clamp(18px,1.65vw,25px); line-height:1.5; }
+@media(min-width:1081px) { .interactive-model { max-width:520px; } }
+@media(max-width:640px) {
+ .chapter-table { font-size:13px; }
+ .chapter-table th { font-size:12px; }
+ .chapter-table td,.chapter-table th { padding:8px 3px; }
+ .model-cards strong { font-size:20px; overflow-wrap:anywhere; }
+ .model-result { font-size:15px; }
+}
